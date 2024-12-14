@@ -1,7 +1,4 @@
-import {
-  getDefaultLoggerOptions,
-  getTimeStamp,
-} from "./util.js";
+import { getDefaultLoggerOptions, getTimeStamp } from "./util.js";
 
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 export interface Level {
@@ -46,7 +43,9 @@ class Logger {
     const currentLevelIndex = this.levels[level];
     const setLevelIndex = this.levels[this.level];
 
-    const shouldLog = currentLevelIndex <= setLevelIndex;
+    const shouldLog =
+      process.env.NODE_ENV !== "production" &&
+      currentLevelIndex <= setLevelIndex;
 
     if (!shouldLog) return;
 
@@ -78,3 +77,4 @@ class Logger {
 }
 
 export default new Logger();
+
