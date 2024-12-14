@@ -29,7 +29,7 @@ export default tseslint.config(
     files: ["tests/**"],
     plugins: { vitest },
     rules: {
-      ...vitest.configs.all.rules,
+      ...vitest.configs.recommended.rules,
     },
     settings: {
       vitest: {
