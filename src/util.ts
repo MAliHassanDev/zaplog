@@ -1,29 +1,52 @@
 import { Level, LoggerOptions } from "./logger";
 
-type NodeEnv = "development" | "production" | "test";
+export type NodeEnv = "development" | "production" | "test";
 
-export function getTimeStamp() {
-  const date = new Date();
-  const month = date.getMonth();
-  const year = date.getFullYear();
-  const currDate = date.getDate();
-  const hour = date.getHours();
-  const minutes = date.getMinutes();
-  const seconds = date.getSeconds();
-  return `${currDate}-${month}-${year} ${
-    hour > 12 ? hour - 12 : hour
-  }:${minutes}:${seconds}`;
+export type StampFormat = "";
+
+export function getTimeStamp(
+  format = "dd-MM-yyyy hh:mm:ss",
+  date: Date = new Date(),
+) {
+  const hours24 = date.getHours();
+  const hours12 = hours24 > 12 ? hours24 - 12 : hours24;
+  return format.replace(
+    /(yyyy)?(MM)?(dd)?(HH)?(hh)?(mm)?(ss)?(a)?/g,
+    (match: string) => {
+      switch (match) {
+        case "yyyy":
+          return `${date.getFullYear()}`;
+        case "MM":
+          return transformIn2Digit(date.getMonth());
+        case "dd":
+          return transformIn2Digit(date.getDate());
+        case "HH":
+          return `${hours24}`;
+        case "hh":
+          return transformIn2Digit(hours12);
+        case "mm":
+          return transformIn2Digit(date.getMinutes());
+        case "ss":
+          return transformIn2Digit(date.getSeconds());
+        case "a":
+          return hours24 >= 12 ? "PM" : "AM";
+        default:
+          return "";
+      }
+    },
+  );
 }
 
-export function getDefaultLoggerOptions(): LoggerOptions {
+export function getDefaultLoggerOptions(
+  env = process.env.NODE_ENV as NodeEnv,
+): LoggerOptions {
   return {
-    level: getDefaultLogLevel(),
+    level: getLogLevel(env),
     errorStack: true,
   };
 }
 
-function getDefaultLogLevel() {
-  const env = process.env.NODE_ENV as NodeEnv;
+export function getLogLevel(env: NodeEnv) {
   let level: keyof Level;
   switch (env) {
     case "development":
@@ -39,4 +62,8 @@ function getDefaultLogLevel() {
       level = "info";
   }
   return level;
+}
+
+export function transformIn2Digit(num: number): string {
+  return num < 10 ? `${num}`.padStart(2, "0") : `${num}`;
 }

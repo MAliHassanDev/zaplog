@@ -6,7 +6,7 @@
     // Ensures every non-declaration file is treated as module
     "moduleDetection": "force",
     /* -------------------------------------- Bundler --------------------------------*/
-    "lib": ["ES2022.Error"],
+    "lib": ["ES2022"],
     // sets the module system for the program
     "module": "nodeNext",
     /*
