@@ -1,5 +1,3 @@
-import { Level, LoggerOptions } from "./logger";
-
 export type NodeEnv = "development" | "production" | "test";
 
 export type StampFormat = "";
@@ -37,33 +35,11 @@ export function getTimeStamp(
   );
 }
 
-export function getDefaultLoggerOptions(
-  env = process.env.NODE_ENV as NodeEnv,
-): LoggerOptions {
-  return {
-    level: getLogLevel(env),
-    errorStack: true,
-  };
-}
-
-export function getLogLevel(env: NodeEnv) {
-  let level: keyof Level;
-  switch (env) {
-    case "development":
-      level = "info";
-      break;
-    case "test":
-      level = "error";
-      break;
-    case "production":
-      level = "warn";
-      break;
-    default:
-      level = "info";
-  }
-  return level;
+export function getEnv(): NodeEnv {
+  return (process.env.NODE_ENV as NodeEnv | null) ?? "development";
 }
 
 export function transformIn2Digit(num: number): string {
   return num < 10 ? `${num}`.padStart(2, "0") : `${num}`;
 }
+
