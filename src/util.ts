@@ -42,4 +42,3 @@ export function getEnv(): NodeEnv {
 export function transformIn2Digit(num: number): string {
   return num < 10 ? `${num}`.padStart(2, "0") : `${num}`;
 }
-

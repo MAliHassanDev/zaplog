@@ -43,7 +43,7 @@ export default tseslint.config(
     },
   },
   {
-    ignores: ["build/**", "**/*.mjs", "**/*.js", "**/*.config.ts"],
+    ignores: ["**/*.mjs", "**/*.js", "**/*.config.ts", "dist/**"],
   },
   {
     files: ["**/*.js"],
