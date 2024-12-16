@@ -37,7 +37,7 @@ class Logger {
 
   private readonly errorStack: boolean;
 
-  constructor(options: Options = new LoggerOptions(getEnv()).getDefault()) {
+  constructor(options: Options = new LoggerOption(getEnv()).getDefault()) {
     this.level = options.level;
     this.errorStack = options.errorStack ?? true;
   }
@@ -79,7 +79,7 @@ class Logger {
   };
 }
 
-export class LoggerOptions {
+export class LoggerOption {
   public constructor(private readonly env: NodeEnv = "development") {}
 
   public getDefault() {

@@ -15,7 +15,7 @@ export function getTimeStamp(
         case "yyyy":
           return `${date.getFullYear()}`;
         case "MM":
-          return transformIn2Digit(date.getMonth());
+          return transformIn2Digit(date.getMonth() + 1);
         case "dd":
           return transformIn2Digit(date.getDate());
         case "HH":
@@ -40,5 +40,5 @@ export function getEnv(): NodeEnv {
 }
 
 export function transformIn2Digit(num: number): string {
-  return num < 10 ? `${num}`.padStart(2, "0") : `${num}`;
+  return `${num}`.padStart(2, "0");
 }
