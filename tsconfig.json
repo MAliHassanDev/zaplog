@@ -22,6 +22,8 @@
     "outDir": "dist",
     // Generate .d.ts files for every ts file
     "declaration": true,
+    // Generates a source map for .d.ts files which map back to the original .ts source file
+    "declarationMap": true,
     // Generate sourceMap files which will map the build js file to original ts files
     "sourceMap": true,
     /* ---------------------------------------- Linting ------------------------------- */
