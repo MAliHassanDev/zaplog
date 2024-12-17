@@ -1,1 +1,1 @@
-# easy-logger
+# logger
