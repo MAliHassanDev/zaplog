@@ -1,4 +1,4 @@
-# litelogger
+# @muhammad.dev/litelogger
 
 ## 1.0.1
 
