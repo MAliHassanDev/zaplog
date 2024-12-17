@@ -1,1 +1,1 @@
-# logger
+# Lite logger

@@ -1,8 +1,8 @@
 {
-  "name": "@ali.dev/logger",
-  "version": "1.0.1",
-  "description": "A logger which makes logging easy",
-  "homepage": "https://github.com/MAliHassanDev/logger",
+  "name": "litelogger",
+  "version": "1.0.0",
+  "description": "A lightweight and versatile logger designed to meet your everyday logging requirements.",
+  "homepage": "https://github.com/MAliHassanDev/litelogger/",
   "author": "Muhammad Ali Hassan",
   "license": "MIT",
   "type": "module",
@@ -16,11 +16,11 @@
   "main": "dist/logger.js",
   "types": "./dist/logger.d.ts",
   "bugs": {
-    "url": "https://github.com/MAliHassanDev/logger.git/issues"
+    "url": "https://github.com/MAliHassanDev/litelogger.git/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/MAliHassanDev/logger.git/"
+    "url": "https://github.com/MAliHassanDev/litelogger.git/"
   },
   "keywords": [
     "logger",
