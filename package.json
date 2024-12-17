@@ -2,7 +2,6 @@
   "name": "@easy/logger",
   "version": "1.0.0",
   "description": "A logger which makes logging easy",
-  "main": "dist/logger.js",
   "homepage": "https://github.com/MAliHassanDev/easy-logger",
   "author": "Muhammad Ali Hassan",
   "license": "MIT",
@@ -10,6 +9,8 @@
   "files": [
     "dist"
   ],
+  "main": "dist/logger.js",
+  "types": "./dist/logger.d.ts",
   "bugs": {
     "url": "https://github.com/MAliHassanDev/easy-logger/issues"
   },
@@ -35,10 +36,14 @@
     "preview": "node ./build/server.js",
     "format:write": "prettier --write .",
     "format:check": "prettier --check .",
+    "check-exports": "attw --pack . --ignore-rules=cjs-resolves-to-esm",
     "lint": "eslint .",
-    "ci": "npm run format:check && npm run lint && npm run test && npm run build"
+    "ci": "npm run format:check && npm run lint && npm run check-exports && npm run test && npm run build",
+    "prepublishOnly": "npm run ci"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "^0.17.1",
+    "@changesets/cli": "^2.27.10",
     "@eslint/js": "^9.16.0",
     "@types/node": "^22.9.3",
     "@vitest/eslint-plugin": "^1.1.16",
