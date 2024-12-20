@@ -1,8 +1,8 @@
 {
-  "name": "@muhammad.dev/litelogger",
-  "version": "1.0.1",
+  "name": "zaplog",
+  "version": "1.0.0",
   "description": "A lightweight and versatile logger designed to meet your everyday logging requirements.",
-  "homepage": "https://github.com/MAliHassanDev/litelogger/",
+  "homepage": "https://github.com/MAliHassanDev/zaplog/",
   "author": "Muhammad Ali Hassan",
   "license": "MIT",
   "type": "module",
@@ -16,16 +16,17 @@
   "main": "dist/logger.js",
   "types": "./dist/logger.d.ts",
   "bugs": {
-    "url": "https://github.com/MAliHassanDev/litelogger.git/issues"
+    "url": "https://github.com/MAliHassanDev/zaplog.git/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/MAliHassanDev/litelogger.git/"
+    "url": "https://github.com/MAliHassanDev/zaplog.git/"
   },
   "keywords": [
     "logger",
     "logging",
-    "logs"
+    "logs",
+    "zaplog"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",

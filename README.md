@@ -1,1 +1,1 @@
-# Lite logger
+# Zaplog
