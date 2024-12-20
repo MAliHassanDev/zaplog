@@ -1,5 +1,0 @@
----
-"zaplog": patch
----
-
-Initial release
