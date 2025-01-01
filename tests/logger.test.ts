@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/non-nullable-type-assertion-style */
 import { describe, vi, it, expect, beforeEach, MockInstance } from "vitest";
 import Logger, { Level, LoggerOption } from "../src/logger.js";
+import { existsSync } from "fs";
+import { join } from "path";
+import { readFile, stat } from "fs/promises";
 
 describe("Logger", () => {
   describe("given default options", () => {
@@ -22,6 +25,72 @@ describe("Logger", () => {
       expect(vi.mocked(spy)).toHaveBeenCalled();
       expect(vi.mocked(spy).mock.calls[0][0]).toMatch(/info/);
       expect(vi.mocked(spy).mock.calls[0][0]).toMatch(message);
+    });
+
+    it("creates logs dir in project root", () => {
+      createLogger();
+      const dir = join(process.cwd(), "logs");
+      expect(existsSync(dir)).toBeTruthy();
+    });
+
+    it("creates default log files in default  directory", () => {
+      createLogger();
+      const { logFiles } = new LoggerOption().getDefault();
+      Promise.all(
+        Object.values(logFiles).map(filePath =>
+          stat(filePath)
+            .then(() => true)
+            .catch(() => false),
+        ),
+      )
+        .then(files => {
+          expect(files.every(file => file)).toBeTruthy();
+        })
+        .catch(console.error);
+    });
+
+    it("writes log with level warn in default file", () => {
+      const message = "Warning mock message";
+      createLogger().warn(message);
+      const { logFiles } = new LoggerOption().getDefault();
+      readFile(logFiles.warn, "utf-8")
+        .then((logs: string) => {
+          expect(logs).toMatch(message);
+        })
+        .catch(console.error);
+    });
+
+    it("writes log with level info in default file", () => {
+      const message = "Info mock message";
+      createLogger().warn(message);
+      const { logFiles } = new LoggerOption().getDefault();
+      readFile(logFiles.info, "utf-8")
+        .then((logs: string) => {
+          expect(logs).toMatch(message);
+        })
+        .catch(console.error);
+    });
+
+    it("writes log with level debug in default file", () => {
+      const message = "Debug mock message";
+      createLogger().warn(message);
+      const { logFiles } = new LoggerOption().getDefault();
+      readFile(logFiles.debug, "utf-8")
+        .then((logs: string) => {
+          expect(logs).toMatch(message);
+        })
+        .catch(console.error);
+    });
+
+    it("writes log with level error in default file", () => {
+      const message = "Error mock message";
+      createLogger().warn(message);
+      const { logFiles } = new LoggerOption().getDefault();
+      readFile(logFiles.error, "utf-8")
+        .then((logs: string) => {
+          expect(logs).toMatch(message);
+        })
+        .catch(console.error);
     });
   });
   describe("given level debug", () => {
