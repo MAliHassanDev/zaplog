@@ -1,5 +1,11 @@
 # zaplog
 
+## 1.1.1
+
+### Patch Changes
+
+- 0a69ab7: Fix writing to log files when logFiles option is set to false
+
 ## 1.1.0
 
 ### Minor Changes
