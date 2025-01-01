@@ -1,6 +1,7 @@
+import { join } from "node:path";
 import { getEnv, getTimeStamp, NodeEnv } from "./util.js";
-
-/* eslint-disable @typescript-eslint/restrict-template-expressions */
+import WriteStream from "./writeStream.js";
+import WriterStream from "./writeStream.js";
 
 export type Level = "error" | "warn" | "info" | "debug";
 
@@ -13,9 +14,22 @@ export interface LevelCode {
 
 type Context = string | null;
 
+type LogFiles = Partial<Record<Level, string>> & {
+  combined: string;
+};
+
+interface LogObject {
+  level: Level;
+  message: string;
+  time: string;
+  context?: Context;
+  stack?: string;
+}
+
 export interface Options {
-  readonly level: Level;
+  readonly level?: Level;
   readonly errorStack?: boolean;
+  readonly logFiles?: LogFiles | boolean;
 }
 
 class Logger {
@@ -37,9 +51,16 @@ class Logger {
 
   private readonly errorStack: boolean;
 
-  constructor(options: Options = new LoggerOption(getEnv()).getDefault()) {
-    this.level = options.level;
-    this.errorStack = options.errorStack ?? true;
+  private readonly logFiles: LogFiles | boolean;
+
+  private writeStreamMap: Map<keyof LogFiles, WriteStream> | null = null;
+
+  constructor({ level, errorStack, logFiles }: Options = {}) {
+    const defaultOptions = new LoggerOption(getEnv()).getDefault();
+    this.level = level ?? defaultOptions.level;
+    this.errorStack = errorStack ?? defaultOptions.errorStack;
+    this.logFiles =
+      logFiles == true || !logFiles ? defaultOptions.logFiles : logFiles;
   }
 
   private log(level: Level, message: unknown, context: Context) {
@@ -52,14 +73,59 @@ class Logger {
 
     if (!shouldLog) return;
 
+    const logObject = this.createLogObject(level, message, context);
+    const logString = this.createLogString(logObject);
+    console.log(logString);
+
+    if (typeof this.logFiles == "boolean") return;
+
+    if (!this.writeStreamMap) {
+      this.writeStreamMap = this.createWriteStreamsMap(this.logFiles);
+    }
+    const stream =
+      this.writeStreamMap.get(level) ?? this.writeStreamMap.get("combined");
+    if (!stream) return;
+    this.writeLogToFile(stream, logObject);
+  }
+
+  private createLogObject(level: Level, message: unknown, context: Context) {
+    const isError = message instanceof Error;
+    const logObject: LogObject = {
+      level,
+      message: isError ? message.message : (message as string),
+      time: getTimeStamp(),
+    };
+    const errorStack = isError && this.errorStack ? message.stack : null;
+    if (context !== null) logObject.context = context;
+    if (errorStack) logObject.stack = errorStack;
+    return logObject;
+  }
+
+  private createLogString({ level, message, context, stack, time }: LogObject) {
     const colorCode = this.levelColorCodes[level];
-    const isError = message instanceof Error && this.errorStack;
 
-    const logHeader = `${getTimeStamp()} \x1B[${colorCode};1;1m${level}:\x1B[0m`;
+    const logHeader = `${time} \x1B[${colorCode};1;1m${level}:\x1B[0m`;
     const logContext = context ? ` [${context}]` : "";
-    const logMessage = isError ? message.stack : message;
+    return `${logHeader}${logContext} ${message} ${stack ?? ""}`;
+  }
 
-    console.log(`${logHeader}${logContext} ${logMessage}`);
+  private writeLogToFile(stream: WriteStream, logObject: LogObject) {
+    try {
+      stream.write(JSON.stringify(logObject));
+    } catch (err: unknown) {
+      console.error("Error occurred while writing log to file", err);
+    }
+  }
+
+  private createWriteStreamsMap(logFiles: LogFiles) {
+    const map = new Map<keyof LogFiles, WriteStream>();
+    for (const [key, filePath] of Object.entries(logFiles) as Array<
+      [keyof LogFiles, string]
+    >) {
+      const stream = new WriterStream(filePath);
+      map.set(key, stream);
+    }
+    return map;
   }
 
   public info = (message: string, context: Context = null) => {
@@ -83,9 +149,17 @@ export class LoggerOption {
   public constructor(private readonly env: NodeEnv = "development") {}
 
   public getDefault() {
+    const logsDir = join(process.cwd(), "logs");
     return {
       level: this.getLogLevel(),
       errorStack: true,
+      logFiles: {
+        error: join(logsDir, "errors.log"),
+        warn: join(logsDir, "warnings.log"),
+        info: join(logsDir, "combined.log"),
+        debug: join(logsDir, "combined.log"),
+        combined: join(logsDir, "combined.log"),
+      },
     };
   }
 
