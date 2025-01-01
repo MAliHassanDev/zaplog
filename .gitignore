@@ -3,4 +3,4 @@ dist
 build
 .env
 .idea
-logs
+**/logs

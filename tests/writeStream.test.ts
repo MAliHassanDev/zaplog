@@ -24,7 +24,7 @@ describe("WriteStream", () => {
 
 function getLogFileLocation() {
   const fileName = "testMock.txt";
-  const dirPath = join(import.meta.dirname, "mockDir");
+  const dirPath = join(import.meta.dirname, "logs");
 
   return {
     fileName: "testMock.text",
