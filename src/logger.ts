@@ -60,7 +60,9 @@ class Logger {
     this.level = level ?? defaultOptions.level;
     this.errorStack = errorStack ?? defaultOptions.errorStack;
     this.logFiles =
-      logFiles == true || !logFiles ? defaultOptions.logFiles : logFiles;
+      logFiles == true || logFiles == undefined
+        ? defaultOptions.logFiles
+        : logFiles;
   }
 
   private log(level: Level, message: unknown, context: Context) {
