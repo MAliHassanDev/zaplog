@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/non-nullable-type-assertion-style */
 import { describe, vi, it, expect, beforeEach, MockInstance } from "vitest";
-import Logger, { Level, LoggerOption } from "../src/logger.js";
+import Logger, { LoggerOption, Options } from "../src/logger.js";
 import { existsSync } from "fs";
 import { join } from "path";
 import { readFile, stat } from "fs/promises";
@@ -14,16 +14,16 @@ describe("Logger", () => {
       message = createLogMessage();
     });
     it("prints message with timeStamp to console", () => {
-      createLogger().info(message);
+      createLogger().error(message);
       expect(vi.mocked(spy)).toHaveBeenCalled();
       expect(vi.mocked(spy).mock.calls[0][0]).toMatch(createTimeStamp());
       expect(vi.mocked(spy).mock.calls[0][0]).toMatch(message);
     });
 
     it("prints message with called method name", () => {
-      createLogger().info(message);
+      createLogger().error(message);
       expect(vi.mocked(spy)).toHaveBeenCalled();
-      expect(vi.mocked(spy).mock.calls[0][0]).toMatch(/info/);
+      expect(vi.mocked(spy).mock.calls[0][0]).toMatch(/error/);
       expect(vi.mocked(spy).mock.calls[0][0]).toMatch(message);
     });
 
@@ -102,21 +102,21 @@ describe("Logger", () => {
     });
 
     it("on info method call, prints the message and log level to console", () => {
-      createLogger("debug").info(message);
+      createLogger({ level: "debug" }).info(message);
       expect(spy).toHaveBeenCalled();
       expect(vi.mocked(spy).mock.calls[0][0]).toMatch(message);
       expect(vi.mocked(spy).mock.calls[0][0]).toMatch(/info:/);
     });
 
     it("on warn method call, prints the message with log level  to console", () => {
-      createLogger("debug").warn(message);
+      createLogger({ level: "debug" }).warn(message);
       expect(spy).toHaveBeenCalled();
       expect(vi.mocked(spy).mock.calls[0][0]).toMatch(message);
       expect(vi.mocked(spy).mock.calls[0][0]).toMatch(/warn:/);
     });
 
     it("on debug method call, prints the message with log level to console", () => {
-      createLogger("debug").debug(message);
+      createLogger({ level: "debug" }).debug(message);
       expect(spy).toHaveBeenCalled();
       expect(vi.mocked(spy).mock.calls[0][0]).toMatch(message);
       expect(vi.mocked(spy).mock.calls[0][0]).toMatch(/debug:/);
@@ -124,7 +124,7 @@ describe("Logger", () => {
 
     it("on error method call,prints the message,title and error stack to console", () => {
       const error = new Error(message);
-      createLogger("debug").error(error);
+      createLogger({ level: "debug" }).error(error);
 
       expect(spy).toHaveBeenCalled();
       expect(vi.mocked(spy).mock.calls[0][0]).toMatch(message);
@@ -143,7 +143,7 @@ describe("Logger", () => {
     });
 
     it("on debug method call, doesn't prints anything to console", () => {
-      createLogger("info").debug(message);
+      createLogger({ level: "info" }).debug(message);
       expect(spy).not.toHaveBeenCalled();
     });
   });
@@ -157,12 +157,12 @@ describe("Logger", () => {
     });
 
     it("on debug method call, doesn't prints anything to console", () => {
-      createLogger("warn").debug(message);
+      createLogger({ level: "warn" }).debug(message);
       expect(spy).not.toHaveBeenCalled();
     });
 
     it("on info method call, doesn't prints anything to console", () => {
-      createLogger("warn").info(message);
+      createLogger({ level: "warn" }).info(message);
       expect(spy).not.toHaveBeenCalled();
     });
   });
@@ -177,23 +177,23 @@ describe("Logger", () => {
     });
 
     it("on info method call, doesn't prints anything to console", () => {
-      createLogger("error").info(message);
+      createLogger({ level: "error" }).info(message);
       expect(spy).not.toHaveBeenCalled();
     });
 
     it("on debug method call, doesn't prints anything to console", () => {
-      createLogger("error").debug(message);
+      createLogger({ level: "error" }).debug(message);
       expect(spy).not.toHaveBeenCalled();
     });
 
     it("on warn method call, doesn't prints anything to console", () => {
-      createLogger("error").warn(message);
+      createLogger({ level: "error" }).warn(message);
       expect(spy).not.toHaveBeenCalled();
     });
 
     it("on error method call,prints the message,title and error stack to console", () => {
       const error = new Error(message);
-      createLogger("error").error(error);
+      createLogger({ level: "error" }).error(error);
       expect(spy).toHaveBeenCalled();
       expect(vi.mocked(spy).mock.calls[0][0]).toMatch(message);
       expect(vi.mocked(spy).mock.calls[0][0]).toMatch(error.stack as string);
@@ -211,7 +211,7 @@ describe("Logger", () => {
     });
     it("doesn't prints the error stack to the console", () => {
       const error = new Error(message);
-      createLogger("error", false).error(error);
+      createLogger({ level: "error", errorStack: false }).error(error);
       expect(spy).toHaveBeenCalled();
       expect(vi.mocked(spy).mock.calls[0][0]).not.toMatch(
         error.stack as string,
@@ -255,8 +255,8 @@ describe("LoggerOptions", () => {
   });
 });
 
-function createLogger(level: Level = "info", errorStack?: boolean) {
-  return new Logger({ level, errorStack });
+function createLogger(options: Options = {}) {
+  return new Logger(options);
 }
 
 function createLogMessage() {
