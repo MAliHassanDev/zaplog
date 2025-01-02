@@ -1,4 +1,4 @@
-import { createWriteStream, existsSync, mkdirSync, WriteStream } from "node:fs";
+import { createWriteStream, existsSync, mkdir, WriteStream } from "node:fs";
 import * as path from "node:path";
 
 class WriterStream {
@@ -41,7 +41,10 @@ class WriterStream {
 
   private makeDirIfNotExists(filePath: string) {
     const dirPath = path.dirname(filePath);
-    if (!existsSync(dirPath)) mkdirSync(dirPath, { recursive: true });
+    if (!existsSync(dirPath))
+      mkdir(dirPath, { recursive: true }, err => {
+        if (err) console.error("Error while creating log directory", err);
+      });
   }
 }
 
