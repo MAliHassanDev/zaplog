@@ -1,5 +1,11 @@
 # zaplog
 
+## 1.1.2
+
+### Patch Changes
+
+- f2b08f0: Create log directory for log files asynchronously
+
 ## 1.1.1
 
 ### Patch Changes
