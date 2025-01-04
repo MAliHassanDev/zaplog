@@ -5,23 +5,9 @@ configurations. It provides four log levels (`info`, `error`, `warn`, `debug`)
 and writes log messages to files (except in production).
 
 [![Version npm](https://img.shields.io/npm/v/zaplog.svg?style=flat-square)](https://www.npmjs.com/package/zaplog)
-
 [![npm Downloads](https://img.shields.io/npm/dm/zaplog.svg?style=flat-square)](https://npmcharts.com/compare/zaplog?minimal=true)
 
 ## [![NPM](https://nodei.co/npm/zaplog.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.com/package/zaplog)
-
-## Features
-
-- **Minimalist Design:** Works out of the box with sensible defaults.
-- **Flexible Log Levels:** Supports `info`, `error`, `warn`, and `debug` levels.
-- **Environment-Sensitive Defaults:** Adjusts logging behavior based on the
-  environment (`development`, `test`, `production`).
-- **File Writing:** Automatically writes logs to categorized files.
-- **Error Stack Traces:** Includes error stack traces for deeper insights.
-- **Zero Configuration:** No need for initial setup; just import and start
-  logging.
-
----
 
 ## Installation
 
@@ -29,8 +15,6 @@ Install Zaplog using npm or yarn:
 
 ```bash
 npm install zaplog
-# or
-yarn add zaplog
 ```
 
 ## Usage
@@ -63,6 +47,19 @@ logger.error("Database connection failed", "DBService");
 
 In the above example, AuthService and DBService are contexts that help identify
 the source of the log messages.
+
+## Features
+
+- **Minimalist Design:** Works out of the box with sensible defaults.
+- **Flexible Log Levels:** Supports `info`, `error`, `warn`, and `debug` levels.
+- **Environment-Sensitive Defaults:** Adjusts logging behavior based on the
+  environment (`development`, `test`, `production`).
+- **File Writing:** Automatically writes logs to categorized files.
+- **Error Stack Traces:** Includes error stack traces for deeper insights.
+- **Zero Configuration:** No need for initial setup; just import and start
+  logging.
+
+---
 
 ## Logging
 
