@@ -1,5 +1,5 @@
 import { it, describe, expect } from "vitest";
-import { getTimeStamp, transformIn2Digit } from "../src/util.js";
+import { getTimeStamp, transformIn2Digit } from "../src/utils/util.js";
 
 describe("transformIn2Digit", () => {
   it("returns number in 2 digit format if number is less than 10", () => {

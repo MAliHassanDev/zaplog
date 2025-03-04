@@ -1,6 +1,6 @@
-export type NodeEnv = "development" | "production" | "test";
+import { Level } from "../logger/baseLogger.js";
+import { NodeEnv } from "../types/types.js";
 
-export type StampFormat = "";
 
 export function getTimeStamp(
   format = "dd-MM-yyyy hh:mm:ss",
@@ -35,10 +35,28 @@ export function getTimeStamp(
   );
 }
 
-export function getEnv(): NodeEnv {
-  return (process.env.NODE_ENV as NodeEnv | null) ?? "development";
-}
-
 export function transformIn2Digit(num: number): string {
   return `${num}`.padStart(2, "0");
+}
+
+export function isEnvironmentNode() {
+  return typeof process !== "undefined";
+}
+
+export function getLogLevelBasedOnEnv(env: NodeEnv): Level {
+  let level: Level;
+  switch (env) {
+    case "development":
+      level = "info";
+      break;
+    case "test":
+      level = "error";
+      break;
+    case "production":
+      level = "warn";
+      break;
+    default:
+      level = "info";
+  }
+  return level;
 }

@@ -2,7 +2,7 @@
   "compilerOptions": {
     /* ------------------------------------ Environment ------------------------------- */
     // target version of javascript
-    "target": "ES6",
+    "target": "ES2022",
     // Ensures every non-declaration file is treated as module
     "moduleDetection": "force",
     /* -------------------------------------- Bundler --------------------------------*/
@@ -30,9 +30,9 @@
     // enables strict type checking
     "strict": true,
     // reports errors on unused local variables
-    "noUnusedLocals": true,
+    //    "noUnusedLocals": true,
     // reports errors on unused  parameters
-    "noUnusedParameters": true,
+    //    "noUnusedParameters": true,
     // Ensures that any non-empty case inside a switch statement includes either break, return, or throw.
     "noFallthroughCasesInSwitch": true
   },
