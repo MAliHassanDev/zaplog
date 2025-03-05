@@ -7,7 +7,7 @@ import {
   makeDirIfNotExists,
 } from "./node.util.js";
 import { dirname } from "node:path";
-import { Level, LogFiles, NodeLoggerConfig } from "../types/logger.types.js";
+import { Context, Level, LogFiles, NodeLoggerConfig } from "../types/logger.types.js";
 
 export class NodeLogger extends BaseLogger {
   private readonly logFiles: LogFiles | false | undefined;
@@ -30,8 +30,8 @@ export class NodeLogger extends BaseLogger {
   protected log(
     level: Level,
     message: unknown,
-    context: string | null,
-    ...optionalParams: Array<unknown>
+    context?: Context,
+    optionalParams?: Array<unknown>
   ): void {
     this.logToConsole(level, message, context, optionalParams);
     if (!this.logFiles) return;
@@ -43,7 +43,7 @@ export class NodeLogger extends BaseLogger {
 
   private async writeLogToFile(filePath: string, logEntry: LogEntry) {
     try {
-      await writeFile(filePath, JSON.stringify(logEntry), {
+      await writeFile(filePath, JSON.stringify(logEntry) + "\n", {
         encoding: "utf-8",
         flag: "a",
       });

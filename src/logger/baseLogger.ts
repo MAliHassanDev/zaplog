@@ -49,15 +49,15 @@ export abstract class BaseLogger implements Logger {
   protected abstract log(
     level: Level,
     message: unknown,
-    context: Context,
-    ...optionalParams: Array<unknown>
+    context?: Context,
+    optionalParams?: Array<unknown>,
   ): void;
 
   protected logToConsole(
     level: Level,
     message: unknown,
-    context: Context,
-    ...optionalParams: Array<unknown>
+    context?: Context,
+    optionalParams?: Array<unknown>,
   ) {
     const currentLevelIndex = this.levels[level];
     const setLevelIndex = this.levels[this.level];
@@ -71,14 +71,24 @@ export abstract class BaseLogger implements Logger {
 
     const logEntry = this.formatLogEntry(level, message, context);
 
-    const logString = this.createLogString(logEntry);
-    console.log(logString, optionalParams);
+    const logHeader = this.createLogHeader(logEntry);
+
+    if (optionalParams && optionalParams.length > 0) {
+      console.log(
+        logHeader,
+        message,
+        logEntry.stack ? logEntry.stack : "",
+        optionalParams,
+      );
+    } else {
+      console.log(logHeader, message, logEntry.stack ? logEntry.stack : "");
+    }
   }
 
-  protected formatLogEntry(level: Level, message: unknown, context: Context) {
+  protected formatLogEntry(level: Level, message: unknown, context?: Context) {
     const isError = message instanceof Error;
 
-    const logObject: LogEntry = {
+    const logEntry: LogEntry = {
       level,
       message: isError ? message.message : (message as string),
       time: getTimeStamp(),
@@ -86,34 +96,42 @@ export abstract class BaseLogger implements Logger {
 
     const errorStack = isError && this.errorStack ? message.stack : null;
 
-    if (context !== null) logObject.context = context;
-    if (errorStack) logObject.stack = errorStack;
-    return logObject;
+    if (context) logEntry.context = context;
+    if (errorStack) logEntry.stack = errorStack;
+    return logEntry;
   }
 
-  private createLogString({ level, message, context, stack, time }: LogEntry) {
+  private createLogHeader({
+    level,
+    context,
+    time,
+  }: Omit<LogEntry, "message" | "stack">) {
     const colorCode = this.levelColorCodes[level];
 
     const logHeader = `${time} \x1B[${colorCode};1;1m${level}:\x1B[0m`;
     const logContext = context ? ` [${context}]` : "";
-    return `${logHeader}${logContext} ${message} ${stack ?? ""}`;
+    return `${logHeader}${logContext}`;
   }
 
-  public info = (message: string, context: Context = null) => {
+  public info = (message: unknown, context: Context) => {
     this.log("info", message, context);
   };
 
-  public error = (message: unknown, context: Context, ...optionalParams: Array<unknown>) => {
+  public error = (
+    message: unknown,
+    context?: Context,
+    ...optionalParams: Array<unknown>
+  ) => {
     this.log("error", message, context, optionalParams);
   };
 
-  public warn = (message: string, context: Context = null) => {
+  public warn = (message: string, context?: Context) => {
     this.log("warn", message, context);
   };
 
   public debug = (
     message: unknown,
-    context: Context,
+    context?: Context,
     ...optionalParams: Array<unknown>
   ) => {
     this.log("debug", message, context, optionalParams);

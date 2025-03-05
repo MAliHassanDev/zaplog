@@ -1,6 +1,6 @@
 import { getLogLevelBasedOnEnv } from "../../utils/util.js";
 import { BaseLogger } from "../baseLogger.js";
-import { BrowserLoggerConfig, Level } from "../types/logger.types.js";
+import { BrowserLoggerConfig, Context, Level } from "../types/logger.types.js";
 import { getBrowserEnv } from "./browser.util.js";
 
 export class BrowserLogger extends BaseLogger {
@@ -13,9 +13,9 @@ export class BrowserLogger extends BaseLogger {
   protected log(
     level: Level,
     message: unknown,
-    context: string | null,
-    ...optionalParams: Array<unknown>
+    context?: Context,
+    optionalParams?: Array<unknown>,
   ): void {
-    this.logToConsole(level, message, context, ...optionalParams);
+    this.logToConsole(level, message, context, optionalParams);
   }
 }

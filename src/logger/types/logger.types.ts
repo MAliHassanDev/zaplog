@@ -4,18 +4,22 @@ export type Level = "error" | "warn" | "info" | "debug";
 
 export type LoggerEnvironment = "browser" | "node";
 
-export type Context = string | null;
+export type Context = string ;
 
 export interface Logger {
-  info(message: string, context: Context): void;
+  info(message: string, context?: Context): void;
 
-  error(message: unknown, context: Context): void;
+  error(
+    message: unknown,
+    context?: Context,
+    ...optionalParams: Array<unknown>
+  ): void;
 
-  warn(message: string, context: Context): void;
+  warn(message: string, context?: Context): void;
 
   debug(
     message: unknown,
-    context: Context,
+    context?: Context,
     ...optionalParams: Array<unknown>
   ): void;
 }
