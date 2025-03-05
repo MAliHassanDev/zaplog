@@ -36,6 +36,7 @@
     "preview": "node ./build/server.js",
     "format:write": "prettier --write .",
     "format:check": "prettier --check .",
+    "local-release": "changeset version && changeset publish",
     "check-exports": "attw --pack . --ignore-rules=cjs-resolves-to-esm",
     "lint": "eslint .",
     "ci": "npm run format:check && npm run lint && npm run check-exports && npm run test && npm run build",
