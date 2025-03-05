@@ -1,4 +1,4 @@
-import { NodeEnv } from "../../types/types.js";
+import { NodeEnv } from "../types/logger.types.js";
 
 declare global {
   interface ImportMetaEnv {

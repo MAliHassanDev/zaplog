@@ -1,18 +1,16 @@
 import { writeFile } from "node:fs/promises";
 import { getLogLevelBasedOnEnv } from "../../utils/util.js";
-import { BaseLoggerConfig, Level, LogEntry, Logger } from "../baseLogger.js";
-import { getDefaultLogFilesConfig, getNodeEnv } from "./node.util.js";
+import { LogEntry, BaseLogger } from "../baseLogger.js";
+import {
+  getDefaultLogFilesConfig,
+  getNodeEnv,
+  makeDirIfNotExists,
+} from "./node.util.js";
+import { dirname } from "node:path";
+import { Level, LogFiles, NodeLoggerConfig } from "../types/logger.types.js";
 
-type LogFiles = Partial<Record<Level, string>> & {
-  combined: string;
-};
-
-type NodeLoggerConfig = Partial<BaseLoggerConfig> & {
-  logFiles?: LogFiles | boolean;
-};
-
-export class NodeLogger extends Logger {
-  private readonly logFiles: LogFiles | false;
+export class NodeLogger extends BaseLogger {
+  private readonly logFiles: LogFiles | false | undefined;
 
   public constructor({ level, errorStack, logFiles }: NodeLoggerConfig = {}) {
     level = level ?? getLogLevelBasedOnEnv(getNodeEnv());
@@ -20,10 +18,13 @@ export class NodeLogger extends Logger {
 
     super({ level, errorStack });
 
-    this.logFiles =
-      logFiles == true || logFiles == undefined
-        ? getDefaultLogFilesConfig()
-        : logFiles;
+    this.logFiles = logFiles == true ? getDefaultLogFilesConfig() : logFiles;
+
+    if (this.logFiles) {
+      Object.values(this.logFiles).forEach(filePath => {
+        makeDirIfNotExists(dirname(filePath));
+      });
+    }
   }
 
   protected log(

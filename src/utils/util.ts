@@ -1,6 +1,4 @@
-import { Level } from "../logger/baseLogger.js";
-import { NodeEnv } from "../types/types.js";
-
+import { Level, NodeEnv } from "../logger/types/logger.types.js";
 
 export function getTimeStamp(
   format = "dd-MM-yyyy hh:mm:ss",

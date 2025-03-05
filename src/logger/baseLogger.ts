@@ -1,7 +1,11 @@
 import { getTimeStamp, isEnvironmentNode } from "../utils/util.js";
 import { getBrowserEnv } from "./browser/browser.util.js";
-
-export type Level = "error" | "warn" | "info" | "debug";
+import {
+  BaseLoggerConfig,
+  Context,
+  Level,
+  Logger,
+} from "./types/logger.types.js";
 
 export interface LevelCode {
   error: 0;
@@ -9,7 +13,6 @@ export interface LevelCode {
   info: 2;
   debug: 3;
 }
-type Context = string | null;
 
 export interface LogEntry {
   level: Level;
@@ -19,12 +22,7 @@ export interface LogEntry {
   stack?: string;
 }
 
-export interface BaseLoggerConfig {
-  readonly level: Level;
-  readonly errorStack: boolean;
-}
-
-export abstract class Logger {
+export abstract class BaseLogger implements Logger {
   private readonly levels: LevelCode = {
     error: 0,
     warn: 1,
@@ -105,8 +103,8 @@ export abstract class Logger {
     this.log("info", message, context);
   };
 
-  public error = (message: unknown, context: Context = null) => {
-    this.log("error", message, context);
+  public error = (message: unknown, context: Context, ...optionalParams: Array<unknown>) => {
+    this.log("error", message, context, optionalParams);
   };
 
   public warn = (message: string, context: Context = null) => {
