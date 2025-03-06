@@ -1,6 +1,6 @@
-import path, { join } from "path";
+import { join } from "path";
 import { NodeEnv } from "../types/logger.types.js";
-import { existsSync, mkdir, mkdirSync } from "fs";
+import { existsSync, mkdirSync } from "fs";
 
 export function getNodeEnv(): NodeEnv {
   return (process.env.NODE_ENV as NodeEnv | null) ?? "development";
