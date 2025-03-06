@@ -4,7 +4,7 @@ export type Level = "error" | "warn" | "info" | "debug";
 
 export type LoggerEnvironment = "browser" | "node";
 
-export type Context = string ;
+export type Context = string;
 
 export interface Logger {
   info(message: string, context?: Context): void;
