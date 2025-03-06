@@ -1,5 +1,11 @@
 # zaplog
 
+## 1.2.0
+
+### Minor Changes
+
+- be23d2a: Add browser support
+
 ## 1.1.2
 
 ### Patch Changes
