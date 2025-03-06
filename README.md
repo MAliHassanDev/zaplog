@@ -51,6 +51,7 @@ the source of the log messages.
 ## Features
 
 - **Minimalist Design:** Works out of the box with sensible defaults.
+- **Browser support:** Works in browser and node.
 - **Flexible Log Levels:** Supports `info`, `error`, `warn`, and `debug` levels.
 - **Environment-Sensitive Defaults:** Adjusts logging behavior based on the
   environment (`development`, `test`, `production`).
@@ -95,14 +96,19 @@ Zaplog is designed to work out of the box, but you can customize its behavior by
 passing configuration options to the `Logger` constructor.
 
 ### Default Options
-
 If no configuration is provided, following default options are used:
 
 ```js
 {
   level: 'info', // Default log level based on the environment
   errorStack: true, // Includes stack traces in error logs
-  logFiles: {
+  logFiles: false,
+}
+```
+if environment is node and logFiles is set to true then these defaults are used:
+
+```json
+logFiles: {
     error: "${projectRoot}/logs/errors.log"),
     warn: "${projectRoot}/logs/warnings.log"),
     info: "${projectRoot}/logs/combined.log"),
@@ -110,18 +116,16 @@ If no configuration is provided, following default options are used:
     combined: "${projectRoot}/logs/combined.log"),
 }
 ```
-
 Where projectRoot is equal to absolute path to you project root.
 
 ### Custom Configuration
 
-To customize the logging behavior, pass an options object to the Logger
-constructor:
+To customize the logging behavior, pass an options object as second argument
 
 ```ts
-import Logger from "zaplog";
+import {createLogger} from "zaplog";
 
-const logger = new Logger({
+const logger = createLogger("node",{
   level: "debug",
   errorStack: false,
   logFiles: {
@@ -134,11 +138,21 @@ const logger = new Logger({
 });
 
 logger.info("Custom configuration applied!");
-```
 
 File path should be absolute e.g
 `path.join(import.meta.dirname,"logs/custom.log")`
+```
+For Browser: 
+```ts
+import {createLogger} from "zaplog";
 
+const logger = createLogger("node",{
+  level: "debug",
+  errorStack: false,
+});
+
+logger.info("Custom configuration applied!");
+```
 ## Contributing
 
 We welcome contributions to improve this project! If you'd like to contribute,
