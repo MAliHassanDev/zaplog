@@ -24,9 +24,9 @@ npm install zaplog
 Here’s how to get started with Zaplog:
 
 ```js
-import Logger from "zaplog";
+import {createLogger} from "zaplog";
 
-const logger = new Logger();
+const logger = createLogger();
 
 // Log messages
 logger.info("This is an info message");
@@ -146,7 +146,7 @@ For Browser:
 ```ts
 import {createLogger} from "zaplog";
 
-const logger = createLogger("node",{
+const logger = createLogger("browser",{
   level: "debug",
   errorStack: false,
 });
