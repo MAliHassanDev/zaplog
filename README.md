@@ -109,13 +109,13 @@ If no configuration is provided, following default options are used:
 
 if environment is node and logFiles is set to true then these defaults are used:
 
-```json
+```js
 logFiles: {
-    error: "${projectRoot}/logs/errors.log"),
-    warn: "${projectRoot}/logs/warnings.log"),
-    info: "${projectRoot}/logs/combined.log"),
-    debug: "${projectRoot}/logs/combined.log"),
-    combined: "${projectRoot}/logs/combined.log"),
+    error: "${projectRoot}/logs/errors.log",
+    warn: "${projectRoot}/logs/warnings.log",
+    info: "${projectRoot}/logs/combined.log",
+    debug: "${projectRoot}/logs/combined.log",
+    combined: "${projectRoot}/logs/combined.log",
 }
 ```
 
