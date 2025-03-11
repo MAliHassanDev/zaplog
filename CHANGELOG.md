@@ -1,5 +1,11 @@
 # zaplog
 
+## 1.2.1
+
+### Patch Changes
+
+- 5916467: Make node the default env in createLogger
+
 ## 1.2.0
 
 ### Minor Changes
