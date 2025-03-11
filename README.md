@@ -24,7 +24,7 @@ npm install zaplog
 Here’s how to get started with Zaplog:
 
 ```js
-import {createLogger} from "zaplog";
+import { createLogger } from "zaplog";
 
 const logger = createLogger();
 
@@ -96,6 +96,7 @@ Zaplog is designed to work out of the box, but you can customize its behavior by
 passing configuration options to the `Logger` constructor.
 
 ### Default Options
+
 If no configuration is provided, following default options are used:
 
 ```js
@@ -105,6 +106,7 @@ If no configuration is provided, following default options are used:
   logFiles: false,
 }
 ```
+
 if environment is node and logFiles is set to true then these defaults are used:
 
 ```json
@@ -116,6 +118,7 @@ logFiles: {
     combined: "${projectRoot}/logs/combined.log"),
 }
 ```
+
 Where projectRoot is equal to absolute path to you project root.
 
 ### Custom Configuration
@@ -142,17 +145,20 @@ logger.info("Custom configuration applied!");
 File path should be absolute e.g
 `path.join(import.meta.dirname,"logs/custom.log")`
 ```
-For Browser: 
-```ts
-import {createLogger} from "zaplog";
 
-const logger = createLogger("browser",{
+For Browser:
+
+```ts
+import { createLogger } from "zaplog";
+
+const logger = createLogger("browser", {
   level: "debug",
   errorStack: false,
 });
 
 logger.info("Custom configuration applied!");
 ```
+
 ## Contributing
 
 We welcome contributions to improve this project! If you'd like to contribute,

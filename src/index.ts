@@ -27,5 +27,3 @@ export function createLogger(
 ) {
   return new Logger(config) as Logger;
 }
-
-
