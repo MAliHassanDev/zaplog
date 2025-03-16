@@ -76,7 +76,7 @@ export abstract class BaseLogger implements Logger {
     if (optionalParams && optionalParams.length > 0) {
       console.log(logHeader, message, logEntry.stack ?? "", optionalParams);
     } else {
-      console.log(logHeader, message, logEntry.stack ? logEntry.stack : "");
+      console.log(logHeader, message, logEntry.stack ?? "");
     }
   }
 
