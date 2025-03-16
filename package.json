@@ -46,7 +46,17 @@
     "check-exports": "attw --pack . --ignore-rules=cjs-resolves-to-esm",
     "lint": "eslint .",
     "ci": "npm run format:check && npm run lint && npm run check-exports && npm run test && npm run build",
-    "prepublishOnly": "npm run ci"
+    "prepublishOnly": "npm run ci",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "prettier --write",
+      "eslint  --no-warn-ignored --max-warnings 0"
+    ],
+    "*.md": [
+      "prettier --write"
+    ]
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.17.1",
@@ -55,6 +65,8 @@
     "@types/node": "^22.9.3",
     "@vitest/eslint-plugin": "^1.1.16",
     "eslint": "^9.16.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.5.0",
     "prettier": "^3.4.2",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2",
