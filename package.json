@@ -14,6 +14,12 @@
     "registry": "https://registry.npmjs.org/"
   },
   "main": "dist/index.js",
+  "browser": "dist/browser.js",
+  "exports": {
+    "node": "./dist/index.js",
+    "browser": "./dist/browser.js",
+    "default": "./dist/index.js"
+  },
   "types": "./dist/index.d.ts",
   "bugs": {
     "url": "https://github.com/MAliHassanDev/zaplog.git/issues"

@@ -25,7 +25,7 @@ Here’s how to get started with Zaplog:
 
 ```js
 import { createLogger } from "zaplog";
-
+// Default loggerEnvironment = 'node'
 const logger = createLogger();
 
 // Log messages
@@ -99,6 +99,8 @@ passing configuration options to the `Logger` constructor.
 
 If no configuration is provided, following default options are used:
 
+#### In Node Environment:
+
 ```js
 {
   level: 'info', // Default log level based on the environment
@@ -107,7 +109,7 @@ If no configuration is provided, following default options are used:
 }
 ```
 
-if environment is node and logFiles is set to true then these defaults are used:
+Default options if `logFiles` is set to true:
 
 ```js
 logFiles: {
@@ -120,6 +122,15 @@ logFiles: {
 ```
 
 Where projectRoot is equal to absolute path to you project root.
+
+#### In Browser Environment:
+
+```js
+{
+  level: 'info', // Default log level based on the environment
+  errorStack: true, // Includes stack traces in error logs
+}
+```
 
 ### Custom Configuration
 
@@ -146,7 +157,7 @@ File path should be absolute e.g
 `path.join(import.meta.dirname,"logs/custom.log")`
 ```
 
-For Browser:
+In Browser Environment:
 
 ```ts
 import { createLogger } from "zaplog";

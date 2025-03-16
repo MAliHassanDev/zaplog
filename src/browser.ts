@@ -5,7 +5,7 @@ import {
   NodeLoggerConfig,
 } from "./logger/types/logger.types.js";
 
-import { NodeLogger } from "./logger/node/nodeLogger.js";
+import { BrowserLogger } from "./logger/browser/browserLogger.js";
 
 export function createLogger(
   loggerEnvironment: "browser",
@@ -20,7 +20,7 @@ export function createLogger(
   loggerEnvironment: LoggerEnvironment = "node",
   config?: BrowserLoggerConfig | NodeLoggerConfig,
 ) {
-  return new NodeLogger(config) as Logger;
+  return new BrowserLogger(config) as Logger;
 }
 
 export * from "./logger/types/logger.types.js";

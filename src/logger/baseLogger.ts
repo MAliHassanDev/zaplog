@@ -74,12 +74,7 @@ export abstract class BaseLogger implements Logger {
     const logHeader = this.createLogHeader(logEntry);
 
     if (optionalParams && optionalParams.length > 0) {
-      console.log(
-        logHeader,
-        message,
-        logEntry.stack ? logEntry.stack : "",
-        optionalParams,
-      );
+      console.log(logHeader, message, logEntry.stack ?? "", optionalParams);
     } else {
       console.log(logHeader, message, logEntry.stack ? logEntry.stack : "");
     }
@@ -113,7 +108,7 @@ export abstract class BaseLogger implements Logger {
     return `${logHeader}${logContext}`;
   }
 
-  public info = (message: unknown, context: Context) => {
+  public info = (message: unknown, context?: Context) => {
     this.log("info", message, context);
   };
 
