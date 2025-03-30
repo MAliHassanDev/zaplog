@@ -41,7 +41,7 @@ export abstract class BaseLogger implements Logger {
 
   private readonly errorStack: boolean;
 
-  constructor({ level, errorStack }: BaseLoggerConfig) {
+  protected constructor({ level, errorStack }: BaseLoggerConfig) {
     this.level = level;
     this.errorStack = errorStack;
   }
